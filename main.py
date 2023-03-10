@@ -46,16 +46,16 @@ def arduino_pi_comms(ser, sensitivity_timer, current_time):
                     take_picture()
 
 if __name__ == "__main__":
-    try:
-        ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-        ser.reset_input_buffer()
-        
-        if ser:
-            # Create a thread for parallel processing/ multithreading (camera stream and PIR Sensor trigger)
-            arduino_comms_thread = threading.Thread(target=arduino_pi_comms, args=(ser, sensitivity_timer, current_time))
-            arduino_comms_thread.daemon = True
-            arduino_comms_thread.start()
-    except:
-        print("Arduino not recognised")
     while True:
-        pass
+        try:
+            ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+            ser.reset_input_buffer()
+            
+            if ser:
+                # Create a thread for parallel processing/ multithreading (camera stream and PIR Sensor trigger)
+                arduino_comms_thread = threading.Thread(target=arduino_pi_comms, args=(ser, sensitivity_timer, current_time))
+                arduino_comms_thread.daemon = True
+                arduino_comms_thread.start()
+        except:
+            print("Arduino not recognised")
+            time.sleep(1)
